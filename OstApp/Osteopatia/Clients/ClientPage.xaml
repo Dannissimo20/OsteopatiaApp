@@ -1,0 +1,63 @@
+﻿<Page x:Class="Osteopatia.ClientPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      xmlns:fw="clr-namespace:SourceChord.FluentWPF;assembly=FluentWPF"
+      xmlns:entity="clr-namespace:OstLib;assembly=OstLib"
+      xmlns:local="clr-namespace:Osteopatia"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="ClientPage">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="325"/>
+        </Grid.ColumnDefinitions>
+        <Frame x:Name="frame" Grid.ColumnSpan="2" NavigationUIVisibility="Hidden" Margin="0,0,0,10" Panel.ZIndex="2"/>
+        <DataGrid x:Name="dgClient" Grid.Column="0" AutoGenerateColumns="False" ItemsSource="{Binding}"
+                  Margin="0,0,2,0" FontSize="20" BorderThickness="1" FontFamily="Times New Roman" IsReadOnly="True" SelectionMode="Single" 
+                  SelectionUnit="FullRow" CanUserResizeColumns="False" CanUserReorderColumns="False">
+            <DataGrid.DataContext>
+                <entity:Client/>
+            </DataGrid.DataContext>
+
+            <DataGrid.CellStyle>
+                <Style TargetType="DataGridCell">
+                    <Setter Property="BorderThickness" Value="0"/>
+                    <Style.Triggers>
+                        <Trigger Property="DataGridCell.IsSelected" Value="True">
+                            <Setter Property="Background" Value="#ffdadada" />
+                            <Setter Property="Foreground" Value="Black" />
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.CellStyle>
+
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Имя" Width="1.3*" Binding="{Binding Path=GetName}" />
+                <DataGridTextColumn Header="Год рождения" Width="0.7*" Binding="{Binding Path=YearOfBirth}" />
+                <DataGridTextColumn Header="Город" Width="*" Binding="{Binding Path=City}"/>
+                <DataGridTextColumn Header="Телефон" Width="*" Binding="{Binding Path=PhoneNumber}"/>
+            </DataGrid.Columns>
+            <DataGrid.ItemContainerStyle>
+                <Style TargetType="DataGridRow">
+                    <EventSetter Event="MouseDoubleClick" Handler="Row_DoubleClick"/>
+                </Style>
+            </DataGrid.ItemContainerStyle>
+        </DataGrid>
+        <StackPanel Grid.Column="1">
+            <StackPanel Orientation="Horizontal">
+                <TextBox x:Name="SurnameBox" materialDesign:HintAssist.Hint="Поиск                                            " FontSize="18" Margin="0 10 0 0"></TextBox>
+                <Button x:Name="ClientSearch" Background="#999999" Foreground="Black" BorderThickness="1" Cursor="Hand" Margin="5 0 0 0" Click="ClientSearch_Click">
+                    <materialDesign:PackIcon Kind="Search"/>
+                </Button>
+            </StackPanel>
+            <Button x:Name="AddButton" Height="50" FontSize="18" Margin="0 10 0 0" Click="AddClientClick">Добавить клиента</Button>
+            <Button x:Name="ChangeButton" Height="50" FontSize="18" Margin="0 10 0 0" Click="ChangeButton_Click">Изменить клиента</Button>
+            <Button x:Name="UpdateButton" Height="50" FontSize="18" Margin="0 10 0 0" Click="UpdateButtonClick">Обновить страницу</Button>
+        </StackPanel>
+    </Grid>
+</Page>
