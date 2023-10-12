@@ -1,5 +1,8 @@
+using System.Collections;
 using Flurl;
 using Flurl.Http;
+using HttpServer.Models;
+
 namespace TestProject1;
 
 public class Tests
@@ -8,8 +11,10 @@ public class Tests
     public void Setup() {}
 
     [Test]
-    public void Test1()
+    public async Task Test1()
     {
+        IEnumerable<TimeTableEntryModel> list = await "http://localhost:8759/TimeTable".GetJsonAsync<IEnumerable<TimeTableEntryModel>>();
+        Console.WriteLine(list);
         Assert.Pass();
     }
 }

@@ -17,4 +17,9 @@
         <PackageReference Include="coverlet.collector" Version="3.1.2" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\..\OstApp\OstLib\OstLib.csproj" />
+      <ProjectReference Include="..\HttpServer\HttpServer.csproj" />
+    </ItemGroup>
+
 </Project>
