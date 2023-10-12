@@ -2,6 +2,7 @@ using HttpServer.Models;
 using OstLib;
 using Microsoft.AspNetCore.Mvc;
 using OstLib.Repository;
+using TimeTableWeekModel = HttpServer.Models.TimeTableWeekModel;
 
 namespace HttpServer.Controllers
 {
@@ -25,6 +26,19 @@ namespace HttpServer.Controllers
                     s.Client.Surname, 
                     s.Client.Name, 
                     s.Client.PhoneNumber));
+            return listOfItems;
+        }
+
+        [HttpPost]
+        public IEnumerable<TimeTableEntryModel> GetTimeTableForThisWeek(TimeTableWeekModel timeTableWeekModel)
+        {
+            var listOfItems = _timeTable
+            .FindAllForThisWeek(timeTableWeekModel.I)
+            .Select(s => new TimeTableEntryModel(
+                s.DateTime, 
+                s.Client.Surname, 
+                s.Client.Name, 
+                s.Client.PhoneNumber));
             return listOfItems;
         }
     }

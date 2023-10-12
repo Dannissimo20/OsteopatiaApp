@@ -1,4 +1,8 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using Itenso.TimePeriod;
+using System.Runtime.CompilerServices;
 using Microsoft.EntityFrameworkCore;
 using OstLib.Repository;
 
@@ -22,6 +26,12 @@ namespace OstLib.Services
              * Делает join при обращении к бд
              */
             return _context.TimeTableEntry.AsNoTracking().Include(t => t.Client);
+        }
+
+        public IEnumerable<TimeTableEntry> FindAllForThisWeek(int k)
+        {
+            Week week = new Week(DateTime.Now + TimeSpan.FromDays(k*7));
+            return _context.TimeTableEntry.Where(t => t.DateTime <= week.LastDayOfWeek && t.DateTime >= week.FirstDayOfWeek);
         }
     }
 }
