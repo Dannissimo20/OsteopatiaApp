@@ -8,7 +8,7 @@ namespace HttpServer.Controllers
     [ApiController]
     public class TimeTableController : ControllerBase
     {
-        [HttpGet("get")]
+        [HttpGet]
         public IEnumerable<TimeTableEntryModel> GetTimeTable()
         {
             var listOfItems = TimeTableEntry
