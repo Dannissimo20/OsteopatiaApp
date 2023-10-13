@@ -22,7 +22,7 @@
             <materialDesign:TimePicker x:Name="TimePicker" Is24Hours="True" materialDesign:HintAssist.Hint="Время" FontSize="18" Margin="5 10 5 0"/>
             <Button x:Name="AddButton" Margin="5 10 5 0" Content="Добавить запись" Click="AddButton_OnClick"/>
         </StackPanel>
-        <ListView x:Name="ClientList" Width="auto" FontSize="18" SelectionChanged="ClientList_OnSelected">
+        <ListView x:Name="ClientList" Width="auto" FontSize="18" MouseLeftButtonUp="ClientList_OnMouseLeftButtonUp">
             <ListBox.DataContext>
                 <entity:Client/>
             </ListBox.DataContext>
