@@ -9,7 +9,7 @@
       xmlns:local="clr-namespace:HttpClient.pages"
       xmlns:models="clr-namespace:OstLib.Models;assembly=OstLib"
       mc:Ignorable="d"
-      Title="TimeTablePage" Height="450" Width="800">
+      Title="TimeTablePage" d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
        <Grid.ColumnDefinitions>
             <ColumnDefinition Width="64"/>

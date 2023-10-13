@@ -22,7 +22,7 @@ namespace HttpClient.pages
         
         public Task<IEnumerable<TimeTableUdpModel>> GetTimeTablesForThisWeek(int weekNumberJson)
         {
-            var res = "http://localhost:8759/TimeTable".PostJsonAsync(new TimeTableWeekModelJSON(weekNumberJson)).Result;
+            var res = "http://localhost:5000/TimeTable".PostJsonAsync(new TimeTableWeekModelJSON(weekNumberJson)).Result;
             var list = res.GetJsonAsync<IEnumerable<TimeTableUdpModel>>().Result;
             return Task.FromResult(list);
         }
@@ -94,9 +94,18 @@ namespace HttpClient.pages
                     if (cell == null)
                         cellStr = "";
                     else
-                        cellStr = cell.ClientSurname + " " + 
-                                  cell.ClientName + "\n" + 
-                                  cell.ClientPhoneNumber;
+                    {
+                        var tmp = cell.ClientPhoneNumber.Split(" ");
+                        if (tmp.Length == 1)
+                            cellStr = cell.ClientSurname + " " +
+                                      cell.ClientName + "\n" +
+                                      tmp[0];
+                        else
+                            cellStr = cell.ClientSurname + " " +
+                                      cell.ClientName + "\n" +
+                                      tmp[0] + "\n" +
+                                      tmp[1];
+                    }
                     listOfDays.Add(cellStr);
                 }
                 TimeTableWeekModel row = new TimeTableWeekModel($"{i}:00", listOfDays);
