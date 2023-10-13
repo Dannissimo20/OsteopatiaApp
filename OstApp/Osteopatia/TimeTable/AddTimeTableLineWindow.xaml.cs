@@ -121,7 +121,7 @@ public partial class AddTimeTableLineWindow : Window
         TimeTableEntry tte = new TimeTableEntry(dateTime, client);
         TimeTableEntry.Add(tte);
         timeTablePage.FillingData();
-        //Close();
+        Close();
     }
 
 
