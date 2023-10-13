@@ -1,6 +1,7 @@
 using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using Microsoft.Extensions.Logging.Abstractions;
 using OstLib;
 
@@ -120,7 +121,7 @@ public partial class AddTimeTableLineWindow : Window
         TimeTableEntry tte = new TimeTableEntry(dateTime, client);
         TimeTableEntry.Add(tte);
         timeTablePage.FillingData();
-        //Close();
+        Close();
     }
 
 
@@ -130,7 +131,7 @@ public partial class AddTimeTableLineWindow : Window
         ClientList.ItemsSource = list;
     }
 
-    private void ClientList_OnSelected(object sender, RoutedEventArgs e)
+    private void ClientList_OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
     {
         var s = (Client) ClientList.SelectedItem;
         SurnameBox.Text = s.Surname;

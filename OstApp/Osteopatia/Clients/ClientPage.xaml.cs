@@ -70,26 +70,11 @@ namespace Osteopatia
             app.Show();
         }
 
-        private void ClientSearch_Click(object sender, RoutedEventArgs e)
+        private void SurnameBox_OnTextChanged(object sender, TextChangedEventArgs e)
         {
-            List<Client> list;
-            string[] FullName = SurnameBox.Text.Split(" ");
-            if (FullName.Length == 1)
-                list = Client.SearchClient(FullName[0]);
-            else if (FullName.Length == 2)
-                list = Client.SearchClient(FullName[0], FullName[1]);
-            else if (FullName.Length == 3)
-                list = Client.SearchClient(FullName[0], FullName[1], FullName[2]);
-            else
-            {
-                MessageBox.Show("Неверно заполненно поле поиска");
-                return;
-            }
-            if(list.Count == 0)
-            {
-                MessageBox.Show("Ничего не найдено");
-                return;
-            }
+            var list = Client.SearchBySurname(SurnameBox.Text);
+            if (list.Count == 0 && SurnameBox.Text.Length == 0)
+                list = Client.GetAll();
             dgClient.ItemsSource = list;
         }
     }

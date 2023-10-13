@@ -33,6 +33,11 @@ namespace OstLib
         {
             return db.TimeTableEntry.ToList();
         }
+        
+        public static IEnumerable<TimeTableEntry> FindAllie()
+        {
+            return db.TimeTableEntry.ToList();
+        }
 
         public static void Add(TimeTableEntry timeTableLine)
         {

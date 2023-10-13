@@ -17,7 +17,6 @@ namespace Osteopatia
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
-            new ApplicationContext(ApplicationContext.GetDb());
         }
     }
 }
