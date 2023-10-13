@@ -49,13 +49,8 @@
             </DataGrid.ItemContainerStyle>
         </DataGrid>
         <StackPanel Grid.Column="1">
-            <StackPanel Orientation="Horizontal">
-                <TextBox x:Name="SurnameBox" materialDesign:HintAssist.Hint="Поиск                                            " FontSize="18" Margin="0 10 0 0"></TextBox>
-                <Button x:Name="ClientSearch" Background="#999999" Foreground="Black" BorderThickness="1" Cursor="Hand" Margin="5 0 0 0" Click="ClientSearch_Click">
-                    <materialDesign:PackIcon Kind="Search"/>
-                </Button>
-            </StackPanel>
-            <Button x:Name="AddButton" Height="50" FontSize="18" Margin="0 10 0 0" Click="AddClientClick">Добавить клиента</Button>
+            <TextBox x:Name="SurnameBox" materialDesign:HintAssist.Hint="Поиск" Width="310" FontSize="18" Margin="0 10 0 0" TextChanged="SurnameBox_OnTextChanged"></TextBox>
+                <Button x:Name="AddButton" Height="50" FontSize="18" Margin="0 10 0 0" Click="AddClientClick">Добавить клиента</Button>
             <Button x:Name="ChangeButton" Height="50" FontSize="18" Margin="0 10 0 0" Click="ChangeButton_Click">Изменить клиента</Button>
             <Button x:Name="UpdateButton" Height="50" FontSize="18" Margin="0 10 0 0" Click="UpdateButtonClick">Обновить страницу</Button>
         </StackPanel>
