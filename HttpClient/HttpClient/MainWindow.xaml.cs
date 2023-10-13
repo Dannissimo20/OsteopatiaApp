@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using HttpClient.pages;
+using OstLib;
 
 namespace HttpClient
 {
@@ -20,9 +22,19 @@ namespace HttpClient
     /// </summary>
     public partial class MainWindow : Window
     {
+        private readonly Page TimeTable;
         public MainWindow()
         {
+            new ApplicationContext(ApplicationContext.GetDb());
+            TimeTable = new TimeTablePage();
             InitializeComponent();
+            this.Title = "Клиенты";
+            WindowState = WindowState.Maximized;
+        }
+
+        private void TimeTableBox_Click(object sender, MouseButtonEventArgs e)
+        {
+            mainFrame.Navigate(TimeTable);
         }
     }
 }
