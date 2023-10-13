@@ -2,7 +2,7 @@ using HttpServer.Models;
 using OstLib;
 using Microsoft.AspNetCore.Mvc;
 using OstLib.Repository;
-using TimeTableWeekModel = HttpServer.Models.TimeTableWeekModel;
+using TimeTableWeekModel = OstLib.TimeTableWeekModelJSON;
 
 namespace HttpServer.Controllers
 {
