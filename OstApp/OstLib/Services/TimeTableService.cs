@@ -31,9 +31,11 @@ namespace OstLib.Services
         public IEnumerable<TimeTableEntry> FindAllForThisWeek(int k)
         {
             Week week = new Week(DateTime.Now + TimeSpan.FromDays(k*7));
+            var lastDayOfWeek = week.LastDayOfWeek;
+            lastDayOfWeek = lastDayOfWeek.AddHours(23);
             return _context
             .TimeTableEntry
-            .Where(t => t.DateTime <= week.LastDayOfWeek && t.DateTime >= week.FirstDayOfWeek)
+            .Where(t => t.DateTime <= lastDayOfWeek && t.DateTime >= week.FirstDayOfWeek)
             .Include(t=>t.Client);
         }
     }

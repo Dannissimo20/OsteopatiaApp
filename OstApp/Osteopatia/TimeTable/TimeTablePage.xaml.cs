@@ -38,7 +38,7 @@ namespace Osteopatia
             var list = await "http://localhost:8759/TimeTable".GetJsonAsync<IEnumerable<TimeTableUdpModel>>();
             return list;
         }*/
-        
+
         public async Task<IEnumerable<TimeTableUdpModel>> GetTimeTablesForThisWeek(int weekNumberJson)
         {
             var res = "http://localhost:8759/TimeTable".PostJsonAsync(new TimeTableWeekModelJSON(weekNumberJson)).Result;
@@ -90,42 +90,30 @@ namespace Osteopatia
 
             // Формирование названий столбцов
             for (int i = 0; i < dataGridColumns.Count; i++)
-                dataGridColumns[i].Header = $"{DateTime.Today.AddDays(i+dayOfWeekSubtract+weekNumber*7).ToString("d.MM.yy ddd")}";
-            
-            List<TimeTableWeekModel> listOfRows = new List<TimeTableWeekModel>();
-            
-            /*for (int i = 9; i <= 19; i++)
-            {
-                List<string> listOfDays = new List<string>();
-                for (int k = 0; k < dataGridColumns.Count; k++)
-                {
-                    string cell = TimeTableEntry.GetTimeTableLineByDate(
-                                  DateTime.Today.AddDays(k+dayOfWeekSubtract+weekNumber * 7).AddHours(i))
-                                  .Client.GetNameWithoutMiddleName;
-                    cell += "\n"+TimeTableEntry.GetTimeTableLineByDate(
-                            DateTime.Today.AddDays(k + dayOfWeekSubtract + weekNumber * 7).AddHours(i))
-                            .Client.PhoneNumber;
-                    listOfDays.Add(cell);
-                }
-                TimeTableWeekModel row = new TimeTableWeekModel($"{i}:00", listOfDays);
-                listOfRows.Add(row);
-            }*/
+                dataGridColumns[i].Header = $"{DateTime.Today.AddDays(i + dayOfWeekSubtract + weekNumber*7).ToString("d.MM.yy ddd")}";
 
-            //var list = GetTimeTables().Result;
+            List<TimeTableWeekModel> listOfRows = new List<TimeTableWeekModel>();
+
             var list1 = GetTimeTablesForThisWeek(weekNumber).Result;
-            
+
             for (int i = 9; i <= 19; i++)
             {
                 List<string> listOfDays = new List<string>();
-                for (int k = 0; k < dataGridColumns.Count; k++)
+                for (int k = 1; k < 8; k++)
                 {
-                    string cell = TimeTableEntry.GetTimeTableLineByDate(
-                        DateTime.Today.AddDays(k+dayOfWeekSubtract+weekNumber * 7).AddHours(i))
-                    .Client.GetNameWithoutMiddleName;
-                    cell += "\n"+TimeTableEntry.GetTimeTableLineByDate(
-                                DateTime.Today.AddDays(k + dayOfWeekSubtract + weekNumber * 7).AddHours(i))
-                            .Client.PhoneNumber;
-                    listOfDays.Add(cell);
+                    int weekNum = k;
+                    if (k == 7)
+                        weekNum = 0;
+                    var cell = list1.FirstOrDefault(l => l.TimeTableDateTime.Hour == i &&
+                                                         (int) l.TimeTableDateTime.DayOfWeek == weekNum);
+                    string cellStr;
+                    if (cell == null)
+                        cellStr = "";
+                    else
+                        cellStr = cell.ClientSurname + " " + 
+                                  cell.ClientName + "\n" + 
+                                  cell.ClientPhoneNumber;
+                    listOfDays.Add(cellStr);
                 }
                 TimeTableWeekModel row = new TimeTableWeekModel($"{i}:00", listOfDays);
                 listOfRows.Add(row);
