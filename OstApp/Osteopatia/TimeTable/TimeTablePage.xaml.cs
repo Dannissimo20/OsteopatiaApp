@@ -1,56 +1,44 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Net;
-using System.Net.Sockets;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Xml.Serialization;
 using Flurl.Http;
-using MaterialDesignThemes.Wpf;
 using Osteopatia.TImeTable;
 using OstLib;
-using DataGridTextColumn = System.Windows.Controls.DataGridTextColumn;
+using OstLib.Models;
 
 namespace Osteopatia
 {
-    public partial class TimeTablePage : Page
+    public partial class TimeTablePage
     {
         // Параметр weekNumber показывает какую неделю нужно вывести в DataGrid
         // 0 - текущая неделя
         // 1 - следующая неделя
         // -2 - неделя которая была 2 недели назад (да тавтология, и что такого?)
-        public int weekNumber = 0;
+        private int _weekNumber;
         public TimeTablePage()
         {
             InitializeComponent();
             FillingData();
         }
 
-        /*public async Task<IEnumerable<TimeTableUdpModel>> GetTimeTables()
-        {
-            var list = await "http://localhost:8759/TimeTable".GetJsonAsync<IEnumerable<TimeTableUdpModel>>();
-            return list;
-        }*/
-
-        public async Task<IEnumerable<TimeTableUdpModel>> GetTimeTablesForThisWeek(int weekNumberJson)
+        public Task<IEnumerable<TimeTableUdpModel>> GetTimeTablesForThisWeek(int weekNumberJson)
         {
             var res = "http://localhost:8759/TimeTable".PostJsonAsync(new TimeTableWeekModelJSON(weekNumberJson)).Result;
             var list = res.GetJsonAsync<IEnumerable<TimeTableUdpModel>>().Result;
-            return list;
+            return Task.FromResult(list);
         }
 
         public void FillingData()
         {
-            // Задумка проста - в зависимости от дня недели переменная dayOfWeekSubtract будет вычитаться
-            // из DateTime каждого названия столбца и каждого DateTime в поиске записей
-            // Таким образом первый столбец в таблице всегда будет понедельником, второй вторником и т.д.
+            /*
+             * Задумка проста - в зависимости от дня недели переменная dayOfWeekSubtract будет вычитаться
+             * из DateTime каждого названия столбца и каждого DateTime в поиске записей
+             * Таким образом первый столбец в таблице всегда будет понедельником, второй вторником и т.д.
+             */
+            
             int dayOfWeekSubtract = 0;
             DayOfWeek dayOfWeek = DateTime.Today.DayOfWeek;
             switch (dayOfWeek)
@@ -90,11 +78,11 @@ namespace Osteopatia
 
             // Формирование названий столбцов
             for (int i = 0; i < dataGridColumns.Count; i++)
-                dataGridColumns[i].Header = $"{DateTime.Today.AddDays(i + dayOfWeekSubtract + weekNumber*7).ToString("d.MM.yy ddd")}";
+                dataGridColumns[i].Header = $"{DateTime.Today.AddDays(i + dayOfWeekSubtract + _weekNumber*7).ToString("d.MM.yy ddd")}";
 
             List<TimeTableWeekModel> listOfRows = new List<TimeTableWeekModel>();
 
-            var list1 = GetTimeTablesForThisWeek(weekNumber).Result;
+            var list1 = GetTimeTablesForThisWeek(_weekNumber).Result;
 
             for (int i = 9; i <= 19; i++)
             {
@@ -124,18 +112,18 @@ namespace Osteopatia
 
         private void LeftButton_OnClick(object sender, RoutedEventArgs e)
         {
-            weekNumber--;
+            _weekNumber--;
             FillingData();
         }
         private void RightButton_OnClick(object sender, RoutedEventArgs e)
         {
-            weekNumber++;
+            _weekNumber++;
             FillingData();
         }
 
         private void defaultWeekButton_OnClick(object sender, RoutedEventArgs e)
         {
-            weekNumber = 0;
+            _weekNumber = 0;
             FillingData();
         }
 

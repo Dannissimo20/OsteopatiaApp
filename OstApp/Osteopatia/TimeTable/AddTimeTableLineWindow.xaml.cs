@@ -2,33 +2,32 @@ using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using Microsoft.Extensions.Logging.Abstractions;
 using OstLib;
 
 namespace Osteopatia.TImeTable;
 
-public partial class AddTimeTableLineWindow : Window
+public partial class AddTimeTableLineWindow
 {
-    private Client client;
-    private TimeTablePage timeTablePage;
+    private Client _client;
+    private TimeTablePage _timeTablePage;
     public AddTimeTableLineWindow(Client clientFromAppointment, TimeTablePage ttp)
     {
         InitializeComponent();
-        client = clientFromAppointment;
-        SurnameBox.Text = client.Surname;
-        NameBox.Text = client.Name;
-        PhoneBox.Text = client.PhoneNumber;
+        _client = clientFromAppointment;
+        SurnameBox.Text = _client.Surname;
+        NameBox.Text = _client.Name;
+        PhoneBox.Text = _client.PhoneNumber;
         SurnameBox.IsEnabled = false;
         NameBox.IsEnabled = false;
         PhoneBox.IsEnabled = false;
         ClientList.IsEnabled = false;
-        timeTablePage = ttp;
+        _timeTablePage = ttp;
 
     }
     public AddTimeTableLineWindow(TimeTablePage ttp)
     {
         InitializeComponent();
-        timeTablePage = ttp;
+        _timeTablePage = ttp;
     }
 
     private void AddButton_OnClick(object sender, RoutedEventArgs e)
@@ -85,7 +84,7 @@ public partial class AddTimeTableLineWindow : Window
                 $"{AddCalendar.SelectedDate.Value.ToString("d")}" +
                 $" {TimePicker.SelectedTime.Value.ToString("t")}"));
 
-            if (item.Client.Equals(client))
+            if (item.Client.Equals(_client))
             {
                 MessageBox.Show($"Занимаешь место на которое этот клиент уже записан? Странно\n",
                     "Боже мой, какая встреча... Кажется я вас уже где-то видел!",
@@ -102,7 +101,7 @@ public partial class AddTimeTableLineWindow : Window
         }
         #endregion
 
-        if (client == null && ClientList.SelectedItem==null)
+        if (_client == null && ClientList.SelectedItem==null)
         {
             var localClient = new Client(SurnameBox.Text,
                 NameBox.Text,
@@ -114,13 +113,13 @@ public partial class AddTimeTableLineWindow : Window
                 null,
                 null,
                 null);
-            client = localClient;
+            _client = localClient;
             Client.Add(localClient);
         }
         var dateTime = DateTime.Parse($"{AddCalendar.SelectedDate.Value.ToString("d")} {TimePicker.SelectedTime.Value.ToString("t")}");
-        TimeTableEntry tte = new TimeTableEntry(dateTime, client);
+        TimeTableEntry tte = new TimeTableEntry(dateTime, _client);
         TimeTableEntry.Add(tte);
-        timeTablePage.FillingData();
+        _timeTablePage.FillingData();
         Close();
     }
 
@@ -137,6 +136,6 @@ public partial class AddTimeTableLineWindow : Window
         SurnameBox.Text = s.Surname;
         NameBox.Text = s.Name;
         PhoneBox.Text = s.PhoneNumber;
-        client = s;
+        _client = s;
     }
 }

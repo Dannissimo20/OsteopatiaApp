@@ -1,33 +1,32 @@
-using System;
+#nullable enable
 using System.Collections.Generic;
-using Npgsql.Replication;
 
-namespace OstLib;
+namespace OstLib.Models;
 
 public class TimeTableWeekModel
 {
-    public string time { get; set; }
-    public string? day1 { get; set; }
-    public string? day2 { get; set; }
-    public string? day3 { get; set; }
-    public string? day4 { get; set; }
-    public string? day5 { get; set; }
-    public string? day6 { get; set; }
-    public string? day7 { get; set; }
-    public List<string>? listOfDays { get; set; }
+    public string Time { get; set; }
+    public string? Day1 { get; set; }
+    public string? Day2 { get; set; }
+    public string? Day3 { get; set; }
+    public string? Day4 { get; set; }
+    public string? Day5 { get; set; }
+    public string? Day6 { get; set; }
+    public string? Day7 { get; set; }
+    public List<string>? ListOfDays { get; set; }
     
     public TimeTableWeekModel(){}
 
     public TimeTableWeekModel(string time, List<string> listOfDays)
     {
-        this.time = time;
-        day1 = listOfDays[0];
-        day2 = listOfDays[1];
-        day3 = listOfDays[2];
-        day4 = listOfDays[3];
-        day5 = listOfDays[4];
-        day6 = listOfDays[5];
-        day7 = listOfDays[6];
+        this.Time = time;
+        Day1 = listOfDays[0];
+        Day2 = listOfDays[1];
+        Day3 = listOfDays[2];
+        Day4 = listOfDays[3];
+        Day5 = listOfDays[4];
+        Day6 = listOfDays[5];
+        Day7 = listOfDays[6];
     }
 
     public TimeTableWeekModel(string time, string day1,
@@ -39,13 +38,13 @@ public class TimeTableWeekModel
         string day7
     )
     {
-        this.time = time;
-        this.day1 = day1;
-        this.day2 = day2;
-        this.day3 = day3;
-        this.day4 = day4;
-        this.day5 = day5;
-        this.day6 = day6;
-        this.day7 = day7;
+        this.Time = time;
+        this.Day1 = day1;
+        this.Day2 = day2;
+        this.Day3 = day3;
+        this.Day4 = day4;
+        this.Day5 = day5;
+        this.Day6 = day6;
+        this.Day7 = day7;
     }
 }
