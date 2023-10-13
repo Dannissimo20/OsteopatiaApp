@@ -27,18 +27,22 @@ namespace Osteopatia
         // 1 - следующая неделя
         // -2 - неделя которая была 2 недели назад (да тавтология, и что такого?)
         public int weekNumber = 0;
-        private byte[] buffer = new byte[1024];
-        private Socket sListener;
         public TimeTablePage()
         {
             InitializeComponent();
             FillingData();
         }
 
-        public async Task<IEnumerable<TimeTableUdpModel>> GetTimeTables()
+        /*public async Task<IEnumerable<TimeTableUdpModel>> GetTimeTables()
         {
             var list = await "http://localhost:8759/TimeTable".GetJsonAsync<IEnumerable<TimeTableUdpModel>>();
-
+            return list;
+        }*/
+        
+        public async Task<IEnumerable<TimeTableUdpModel>> GetTimeTablesForThisWeek(int weekNumberJson)
+        {
+            var res = "http://localhost:8759/TimeTable".PostJsonAsync(new TimeTableWeekModelJSON(weekNumberJson)).Result;
+            var list = res.GetJsonAsync<IEnumerable<TimeTableUdpModel>>().Result;
             return list;
         }
 
@@ -107,7 +111,8 @@ namespace Osteopatia
                 listOfRows.Add(row);
             }*/
 
-            var list = GetTimeTables().Result;
+            //var list = GetTimeTables().Result;
+            var list1 = GetTimeTablesForThisWeek(weekNumber).Result;
             
             for (int i = 9; i <= 19; i++)
             {
