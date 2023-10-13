@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>WinExe</OutputType>
+        <TargetFramework>net6.0-windows</TargetFramework>
+        <Nullable>enable</Nullable>
+        <UseWPF>true</UseWPF>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="FluentWPF" Version="0.10.2" />
+      <PackageReference Include="Flurl.Http" Version="3.2.4" />
+      <PackageReference Include="MaterialDesign.Icons" Version="1.1.0" />
+      <PackageReference Include="MaterialDesignColors" Version="2.1.4" />
+      <PackageReference Include="MaterialDesignThemes" Version="4.9.0" />
+      <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="5.0.10" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\OstApp\OstLib\OstLib.csproj" />
+    </ItemGroup>
+
+</Project>

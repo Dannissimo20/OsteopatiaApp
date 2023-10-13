@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HttpClient", "HttpClient\HttpClient.csproj", "{52D6B598-292E-4A45-B3A6-3703FFCE2148}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OstLib", "..\OstApp\OstLib\OstLib.csproj", "{B41936E3-5DC2-4231-B988-7DB1907E7754}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{52D6B598-292E-4A45-B3A6-3703FFCE2148}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{52D6B598-292E-4A45-B3A6-3703FFCE2148}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{52D6B598-292E-4A45-B3A6-3703FFCE2148}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{52D6B598-292E-4A45-B3A6-3703FFCE2148}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B41936E3-5DC2-4231-B988-7DB1907E7754}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B41936E3-5DC2-4231-B988-7DB1907E7754}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B41936E3-5DC2-4231-B988-7DB1907E7754}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B41936E3-5DC2-4231-B988-7DB1907E7754}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
