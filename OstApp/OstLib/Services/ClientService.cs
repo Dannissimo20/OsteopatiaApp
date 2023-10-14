@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using OstLib.Repository;
 
@@ -14,5 +15,22 @@ namespace OstLib.Services
         public void Add(Client client) => _context.Client.Add(client);
 
         public Client GetById(int id) => _context.Client.FirstOrDefault(c=>c.ID == id);
+
+        public IEnumerable<Client> FindClientsBySurname(string surname)
+        {
+            try
+            {
+                surname = surname.ToLower();
+                var firstLetter = surname.Substring(0, 1);
+                firstLetter = firstLetter.ToUpper();
+                surname = surname.Substring(1);
+                surname = firstLetter + surname;
+                return _context.Client.Where(l => l.Surname.Contains(surname)).ToList();
+            }
+            catch
+            {
+                return new List<Client>();
+            }
+        }
     }
 }
