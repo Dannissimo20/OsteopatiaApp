@@ -41,5 +41,11 @@ namespace HttpServer.Controllers
                 s.Client.PhoneNumber));
             return listOfItems;
         }
+
+        [HttpPost]
+        public int AddTimeTableLine(TimeTableLineModel tableLineModel)
+        {
+            
+        }
     }
 }
