@@ -9,6 +9,7 @@ var connection = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ApplicationContext>(ac => ac.UseNpgsql(connection));
 
 builder.Services.AddTransient<ITimeTable, TimeTableService>();
+builder.Services.AddTransient<IClient, ClientService>();
 
 builder.Services.AddControllers();
 
