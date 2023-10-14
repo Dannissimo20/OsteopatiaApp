@@ -12,7 +12,11 @@ namespace OstLib.Services
             _context = context;
         }
 
-        public void Add(Client client) => _context.Client.Add(client);
+        public void Add(Client client)
+        {
+            _context.Client.Add(client);
+            _context.SaveChanges();
+        }
 
         public Client GetById(int id) => _context.Client.FirstOrDefault(c=>c.ID == id);
 

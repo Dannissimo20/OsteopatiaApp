@@ -39,6 +39,9 @@ namespace OstLib.Services
             .Include(t=>t.Client);
         }
 
-        public void Add(TimeTableEntry timeTableEntry) => _context.TimeTableEntry.Add(timeTableEntry);
+        public void Add(TimeTableEntry timeTableEntry){
+            _context.TimeTableEntry.Add(timeTableEntry);
+            _context.SaveChanges();
+        }
     }
 }
