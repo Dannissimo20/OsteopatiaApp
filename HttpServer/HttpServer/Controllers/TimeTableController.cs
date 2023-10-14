@@ -6,7 +6,7 @@ using TimeTableWeekModel = OstLib.TimeTableWeekModelJSON;
 
 namespace HttpServer.Controllers
 {
-    [Route("[Controller]")]
+    [Route("TimeTable")]
     [ApiController]
     public class TimeTableController : ControllerBase
     {
@@ -31,7 +31,7 @@ namespace HttpServer.Controllers
             return listOfItems;
         }
 
-        [HttpPost]
+        [HttpPost("getWeekTable")]
         public IEnumerable<TimeTableEntryModel> GetTimeTableForThisWeek(TimeTableWeekModel timeTableWeekModel)
         {
             var listOfItems = _timeTable
@@ -44,7 +44,7 @@ namespace HttpServer.Controllers
             return listOfItems;
         }
 
-        [HttpPost]
+        [HttpPost("addTableLine")]
         public int AddTimeTableLine(TimeTableLineModel tableLineModel)
         {
             try
