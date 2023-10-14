@@ -38,5 +38,7 @@ namespace OstLib.Services
             .Where(t => t.DateTime <= lastDayOfWeek && t.DateTime >= week.FirstDayOfWeek)
             .Include(t=>t.Client);
         }
+
+        public void Add(TimeTableEntry timeTableEntry) => _context.TimeTableEntry.Add(timeTableEntry);
     }
 }

@@ -7,5 +7,6 @@ namespace OstLib.Repository
     {
         IEnumerable<TimeTableEntry> FindAll();
         IEnumerable<TimeTableEntry> FindAllForThisWeek(int k);
+        void Add(TimeTableEntry timeTableEntry);
     }
 }
