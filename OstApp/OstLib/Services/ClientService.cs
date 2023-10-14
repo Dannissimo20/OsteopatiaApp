@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using OstLib.Repository;
 
 namespace OstLib.Services
@@ -36,5 +37,7 @@ namespace OstLib.Services
                 return new List<Client>();
             }
         }
+
+        public IEnumerable<Client> FindAll() => _context.Client.AsNoTracking();
     }
 }

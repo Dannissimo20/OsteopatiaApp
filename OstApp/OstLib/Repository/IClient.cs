@@ -7,5 +7,6 @@ namespace OstLib.Repository
         void Add(Client client);
         Client GetById(int id);
         IEnumerable<Client>? FindClientsBySurname(string surname);
+        IEnumerable<Client> FindAll();
     }
 }
