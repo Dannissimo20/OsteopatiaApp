@@ -14,15 +14,15 @@ namespace HttpServer.Controllers
             _client = client;
         }
 
-        [HttpPost("GetBySurname")]
+        [HttpPost("getBySurname")]
         public IEnumerable<Client> GetClientsBySurname(SurnameModel surnameModel)
         {
             /*
              * TODO: surnameModel возвращает null при не null-овом значении. Нужно исправить
              */
-            if (surnameModel.S == null || surnameModel.S == "")
+            if (surnameModel.Surname == null || surnameModel.Surname == "")
                 return _client.FindAll();
-            var list = _client.FindClientsBySurname(surnameModel.S);
+            var list = _client.FindClientsBySurname(surnameModel.Surname);
             return list;
         }
     }
