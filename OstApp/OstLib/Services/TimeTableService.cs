@@ -43,5 +43,16 @@ namespace OstLib.Services
             _context.TimeTableEntry.Add(timeTableEntry);
             _context.SaveChanges();
         }
+        
+        public TimeTableEntry GetTimeTableLineByDate(DateTime date)
+        {
+            TimeTableEntry? tte = _context.TimeTableEntry.Include(t => t.Client).FirstOrDefault(tt => tt.DateTime.Year == date.Year &&
+                                                                         tt.DateTime.Month == date.Month &&
+                                                                         tt.DateTime.Day == date.Day &&
+                                                                         tt.DateTime.Hour == date.Hour);
+            if (tte == null)
+                tte = new TimeTableEntry(DateTime.Today, new Client());
+            return tte;
+        }
     }
 }

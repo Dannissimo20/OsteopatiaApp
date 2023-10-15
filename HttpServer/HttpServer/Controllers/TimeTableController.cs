@@ -80,5 +80,12 @@ namespace HttpServer.Controllers
                 return 400;
             }
         }
+
+        [HttpPost("getByDate")]
+        public TimeTableEntryModel GetTimeTableLineByDate(TimeTableDateModel tableDateModel)
+        {
+            var tte =  _timeTable.GetTimeTableLineByDate(DateTime.Parse(tableDateModel.Date));
+            return new TimeTableEntryModel(tte.DateTime, tte.Client.Surname, tte.Client.Name, tte.Client.PhoneNumber);
+        }
     }
 }
