@@ -49,9 +49,9 @@ namespace HttpServer.Controllers
         {
             try
             {
-                Client client;
+                Client client = _client.GetByTimeTableFields(tableLineModel);
                 TimeTableEntry timeTableLine;
-                if (tableLineModel.ID == 0)
+                if (client == null)
                 {
                     client = new Client(
                         tableLineModel.Surname,
@@ -66,8 +66,6 @@ namespace HttpServer.Controllers
                         "");
                     _client.Add(client);
                 }
-                else
-                    client = _client.GetById(tableLineModel.ID);
                 timeTableLine = new TimeTableEntry(
                     DateTime.Parse(tableLineModel.Date),
                     client);
