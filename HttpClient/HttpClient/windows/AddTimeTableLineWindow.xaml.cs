@@ -60,6 +60,13 @@ namespace HttpClient.windows
             return Task.FromResult(code);
         }
 
+        public Task<IEnumerable<Client>> GetClientsBySurname(SurnameModel surnameModel)
+        {
+            var res = $"http://localhost:8759/Client/getBySurname".PostJsonAsync(surnameModel).Result;
+            var list = res.GetJsonAsync<IEnumerable<Client>>().Result;
+            return Task.FromResult(list);
+        }
+
         private void AddButton_OnClick(object sender, RoutedEventArgs e)
         {
             #region Проверка на правильность заполнения полей и на уже существующую запись
@@ -145,7 +152,7 @@ namespace HttpClient.windows
 
         private void SurnameBox_OnTextChanged(object sender, TextChangedEventArgs e)
         {
-            var list = Client.SearchBySurname(SurnameBox.Text);
+            var list = GetClientsBySurname(new SurnameModel(SurnameBox.Text)).Result;
             ClientList.ItemsSource = list;
         }
 
