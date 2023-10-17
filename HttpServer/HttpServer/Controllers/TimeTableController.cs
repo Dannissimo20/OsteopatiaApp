@@ -49,9 +49,9 @@ namespace HttpServer.Controllers
         {
             try
             {
-                Client client;
+                Client client = _client.GetByTimeTableFields(tableLineModel);
                 TimeTableEntry timeTableLine;
-                if (tableLineModel.ID == 0)
+                if (client == null)
                 {
                     client = new Client(
                         tableLineModel.Surname,
@@ -66,8 +66,6 @@ namespace HttpServer.Controllers
                         "");
                     _client.Add(client);
                 }
-                else
-                    client = _client.GetById(tableLineModel.ID);
                 timeTableLine = new TimeTableEntry(
                     DateTime.Parse(tableLineModel.Date),
                     client);
@@ -82,10 +80,11 @@ namespace HttpServer.Controllers
         }
 
         [HttpPost("getByDate")]
-        public TimeTableEntryModel GetTimeTableLineByDate(TimeTableDateModel tableDateModel)
+        public TimeTableEntry GetTimeTableLineByDate(TimeTableDateModel tableDateModel)
         {
             var tte =  _timeTable.GetTimeTableLineByDate(DateTime.Parse(tableDateModel.Date));
-            return new TimeTableEntryModel(tte.DateTime, tte.Client.Surname, tte.Client.Name, tte.Client.PhoneNumber);
+            tte.Client.TimeTableLines = null;
+            return tte;
         }
     }
 }

@@ -22,7 +22,7 @@ namespace HttpClient.pages
         
         public Task<IEnumerable<TimeTableUdpModel>> GetTimeTablesForThisWeek(int weekNumberJson)
         {
-            var res = "http://localhost:5000/TimeTable".PostJsonAsync(new TimeTableWeekModelJSON(weekNumberJson)).Result;
+            var res = "http://localhost:8759/TimeTable/getWeekTable".PostJsonAsync(new TimeTableWeekModelJSON(weekNumberJson)).Result;
             var list = res.GetJsonAsync<IEnumerable<TimeTableUdpModel>>().Result;
             return Task.FromResult(list);
         }
