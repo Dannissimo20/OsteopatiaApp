@@ -20,6 +20,10 @@ namespace OstLib.Services
         }
 
         public Client GetById(int id) => _context.Client.FirstOrDefault(c=>c.ID == id);
+        public Client GetByTimeTableFields(TimeTableLineModel tableLineModel)
+        {
+            return _context.Client.FirstOrDefault(c => c.Surname == tableLineModel.Surname && c.Name == tableLineModel.Name && c.PhoneNumber.Contains(tableLineModel.Phone));
+        }
 
         public IEnumerable<Client> FindClientsBySurname(string surname)
         {

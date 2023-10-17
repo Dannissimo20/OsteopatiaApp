@@ -6,6 +6,7 @@ namespace OstLib.Repository
     {
         void Add(Client client);
         Client GetById(int id);
+        Client GetByTimeTableFields(TimeTableLineModel tableLineModel);
         IEnumerable<Client>? FindClientsBySurname(string surname);
         IEnumerable<Client> FindAll();
     }
