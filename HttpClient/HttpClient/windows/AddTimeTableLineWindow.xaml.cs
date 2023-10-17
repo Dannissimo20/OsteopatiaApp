@@ -1,7 +1,10 @@
 using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using Flurl.Http;
 using HttpClient.pages;
 using OstLib;
 
@@ -29,6 +32,18 @@ namespace HttpClient.windows
     {
         InitializeComponent();
         _timeTablePage = ttp;
+    }
+    
+    public Task<TimeTableEntry> GetTimeTableByDate(DateTime date)
+    {
+        var date1 = "";
+        if (date.Hour < 10)
+            date1 = $"{date.Year}-{date.Month}-{date.Day}T0{date.Hour}:00:00+03:00";
+        else
+            date1 = $"{date.Year}-{date.Month}-{date.Day}T{date.Hour}:00:00+03:00";
+        var res = "http://localhost:8759/TimeTable/getByDate".PostJsonAsync(new TimeTableDateModel(date1)).Result;
+        var list = res.GetJsonAsync<TimeTableEntry>().Result;
+        return Task.FromResult(list);
     }
 
     private void AddButton_OnClick(object sender, RoutedEventArgs e)
@@ -81,9 +96,10 @@ namespace HttpClient.windows
         if (TimeTableEntry.isTimeTableEntryExists(DateTime.Parse($"{AddCalendar.SelectedDate.Value.ToString("d")}" +
                                                                  $" {TimePicker.SelectedTime.Value.ToString("t")}")))
         {
-            var item = TimeTableEntry.GetTimeTableLineByDate(DateTime.Parse(
+
+            var item = GetTimeTableByDate(DateTime.Parse(
                 $"{AddCalendar.SelectedDate.Value.ToString("d")}" +
-                $" {TimePicker.SelectedTime.Value.ToString("t")}"));
+                $" {TimePicker.SelectedTime.Value.ToString("t")}")).Result;
 
             if (item.Client.Equals(_client))
             {
