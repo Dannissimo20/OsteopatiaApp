@@ -6,8 +6,6 @@ using System.Windows;
 using System.Windows.Controls;
 using Flurl.Http;
 using HttpClient.windows;
-using OstLib;
-using OstLib.Models;
 
 namespace HttpClient.pages
 {

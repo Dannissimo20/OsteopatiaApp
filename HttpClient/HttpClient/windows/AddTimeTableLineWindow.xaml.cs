@@ -6,7 +6,6 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using Flurl.Http;
 using HttpClient.pages;
-using OstLib;
 
 namespace HttpClient.windows
 {
