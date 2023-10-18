@@ -13,20 +13,6 @@ namespace HttpClient.windows
     {
         private Client _client;
         private TimeTablePage _timeTablePage;
-        public AddTimeTableLineWindow(Client clientFromAppointment, TimeTablePage ttp)
-        {
-            InitializeComponent();
-            _client = clientFromAppointment;
-            SurnameBox.Text = _client.Surname;
-            NameBox.Text = _client.Name;
-            PhoneBox.Text = _client.PhoneNumber;
-            SurnameBox.IsEnabled = false;
-            NameBox.IsEnabled = false;
-            PhoneBox.IsEnabled = false;
-            ClientList.IsEnabled = false;
-            _timeTablePage = ttp;
-
-        }
         public AddTimeTableLineWindow(TimeTablePage ttp)
         {
             InitializeComponent();
@@ -113,7 +99,7 @@ namespace HttpClient.windows
                 return;
             }
 
-            if (TimeTableEntry.isTimeTableEntryExists(DateTime.Parse($"{AddCalendar.SelectedDate.Value.ToString("d")}" +
+            /*if (TimeTableEntry.isTimeTableEntryExists(DateTime.Parse($"{AddCalendar.SelectedDate.Value.ToString("d")}" +
                                                                      $" {TimePicker.SelectedTime.Value.ToString("t")}")))
             {
 
@@ -135,7 +121,7 @@ namespace HttpClient.windows
                     MessageBoxButton.OK,
                     MessageBoxImage.Stop);
                 return;
-            }
+            }*/
 
             #endregion
             
