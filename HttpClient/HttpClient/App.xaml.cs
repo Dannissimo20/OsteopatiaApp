@@ -16,7 +16,6 @@ namespace HttpClient
     {
         protected override void OnStartup(StartupEventArgs e)
         {
-            new ApplicationContext(ApplicationContext.GetDb());
             base.OnStartup(e);
         }
     }

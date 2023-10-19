@@ -25,7 +25,6 @@ namespace HttpClient
         private readonly Page TimeTable;
         public MainWindow()
         {
-            new ApplicationContext(ApplicationContext.GetDb());
             TimeTable = new TimeTablePage();
             InitializeComponent();
             this.Title = "Клиенты";
