@@ -6,14 +6,13 @@ using System.Windows;
 using System.Windows.Controls;
 using Flurl.Http;
 using HttpClient.windows;
-using OstLib;
-using OstLib.Models;
 
 namespace HttpClient.pages
 {
     public partial class TimeTablePage
     {
         private int _weekNumber;
+        private string _connection = App.url;
         public TimeTablePage()
         {
             InitializeComponent();
@@ -22,7 +21,7 @@ namespace HttpClient.pages
         
         public Task<IEnumerable<TimeTableUdpModel>> GetTimeTablesForThisWeek(int weekNumberJson)
         {
-            var res = "http://localhost:8759/TimeTable/getWeekTable".PostJsonAsync(new TimeTableWeekModelJSON(weekNumberJson)).Result;
+            var res = $"{_connection}TimeTable/getWeekTable".PostJsonAsync(new TimeTableWeekModelJSON(weekNumberJson)).Result;
             var list = res.GetJsonAsync<IEnumerable<TimeTableUdpModel>>().Result;
             return Task.FromResult(list);
         }

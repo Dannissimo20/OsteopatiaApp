@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using Flurl.Http;
 using HttpClient.pages;
-using OstLib;
 
 namespace HttpClient.windows
 {
@@ -14,20 +14,10 @@ namespace HttpClient.windows
     {
         private Client _client;
         private TimeTablePage _timeTablePage;
-        public AddTimeTableLineWindow(Client clientFromAppointment, TimeTablePage ttp)
-        {
-            InitializeComponent();
-            _client = clientFromAppointment;
-            SurnameBox.Text = _client.Surname;
-            NameBox.Text = _client.Name;
-            PhoneBox.Text = _client.PhoneNumber;
-            SurnameBox.IsEnabled = false;
-            NameBox.IsEnabled = false;
-            PhoneBox.IsEnabled = false;
-            ClientList.IsEnabled = false;
-            _timeTablePage = ttp;
+        private string _connection = App.url;
 
-        }
+        private Task? _task;
+        private CancellationTokenSource _cancellation;
         public AddTimeTableLineWindow(TimeTablePage ttp)
         {
             InitializeComponent();
@@ -41,7 +31,7 @@ namespace HttpClient.windows
                 date1 = $"{date.Year}-{date.Month}-{date.Day}T0{date.Hour}:00:00+03:00";
             else
                 date1 = $"{date.Year}-{date.Month}-{date.Day}T{date.Hour}:00:00+03:00";
-            var res = "http://localhost:8759/TimeTable/getByDate".PostJsonAsync(new TimeTableDateModel(date1)).Result;
+            var res = $"{_connection}TimeTable/getByDate".PostJsonAsync(new TimeTableDateModel(date1)).Result;
             var list = res.GetJsonAsync<TimeTableEntry>().Result;
             return Task.FromResult(list);
         }
@@ -55,16 +45,16 @@ namespace HttpClient.windows
             else
                 date1 = $"{date.Year}-{date.Month}-{date.Day}T{date.Hour}:00:00+03:00";
             tableLineModel.Date = date1;
-            var res = "http://localhost:8759/TimeTable/addTableLine".PostJsonAsync(tableLineModel).Result;
+            var res = $"{_connection}TimeTable/addTableLine".PostJsonAsync(tableLineModel).Result;
             var code = res.GetJsonAsync<int>().Result;
             return Task.FromResult(code);
         }
 
-        public Task<IEnumerable<Client>> GetClientsBySurname(SurnameModel surnameModel)
+        public IEnumerable<Client> GetClientsBySurname(SurnameModel surnameModel)
         {
-            var res = $"http://localhost:8759/Client/getBySurname".PostJsonAsync(surnameModel).Result;
+            var res = $"{_connection}Client/getBySurname".PostJsonAsync(surnameModel).Result;
             var list = res.GetJsonAsync<IEnumerable<Client>>().Result;
-            return Task.FromResult(list);
+            return list;
         }
 
         private void AddButton_OnClick(object sender, RoutedEventArgs e)
@@ -91,11 +81,11 @@ namespace HttpClient.windows
 
             if (TimePicker.SelectedTime.Value.Hour < 8 ||
                 TimePicker.SelectedTime.Value.Hour > 19 ||
-                TimePicker.SelectedTime.Value.Minute%30 != 0)
+                TimePicker.SelectedTime.Value.Minute != 0)
             {
                 MessageBox.Show("Проверьте правильность заполнения поля \"Время\"\n" +
                                 "Выбранное время должно быть в пределах от 9 до 19 часов\n" +
-                                "Минуты должны быть равны 00 или 30",
+                                "Минуты должны быть равны 00",
                     "Что за тяга к необъяснимому?",
                     MessageBoxButton.OK,
                     MessageBoxImage.Warning);
@@ -114,22 +104,13 @@ namespace HttpClient.windows
                 return;
             }
 
-            if (TimeTableEntry.isTimeTableEntryExists(DateTime.Parse($"{AddCalendar.SelectedDate.Value.ToString("d")}" +
-                                                                     $" {TimePicker.SelectedTime.Value.ToString("t")}")))
+            var item = GetTimeTableByDate(DateTime.Parse(
+                $"{AddCalendar.SelectedDate.Value.ToString("d")}" + 
+                $" {TimePicker.SelectedTime.Value.ToString("t")}")).Result;
+            
+            var dateTime = DateTime.Parse($"{AddCalendar.SelectedDate.Value.ToString("d")} {TimePicker.SelectedTime.Value.ToString("t")}");
+            if (item.DateTime.Equals(dateTime))
             {
-
-                var item = GetTimeTableByDate(DateTime.Parse(
-                    $"{AddCalendar.SelectedDate.Value.ToString("d")}" +
-                    $" {TimePicker.SelectedTime.Value.ToString("t")}")).Result;
-
-                if (item.Client.Equals(_client))
-                {
-                    MessageBox.Show($"Занимаешь место на которое этот клиент уже записан? Странно\n",
-                        "Боже мой, какая встреча... Кажется я вас уже где-то видел!",
-                        MessageBoxButton.OK,
-                        MessageBoxImage.Stop);
-                    return;
-                }
                 MessageBox.Show($"Данное время уже занято {item.Client.GetNameWithoutMiddleName}\n" +
                                 $"Выберите другое время",
                     "Боже мой, какая встреча!",
@@ -140,7 +121,6 @@ namespace HttpClient.windows
 
             #endregion
             
-            var dateTime = DateTime.Parse($"{AddCalendar.SelectedDate.Value.ToString("d")} {TimePicker.SelectedTime.Value.ToString("t")}");
             var ttlm = new TimeTableLineModel(dateTime.ToString(), SurnameBox.Text, NameBox.Text, PhoneBox.Text);
             int code = AddTimeTableLine(ttlm).Result;
             if (code == 400)
@@ -152,8 +132,18 @@ namespace HttpClient.windows
 
         private void SurnameBox_OnTextChanged(object sender, TextChangedEventArgs e)
         {
-            var list = GetClientsBySurname(new SurnameModel(SurnameBox.Text)).Result;
-            ClientList.ItemsSource = list;
+            if (_task is not null && !_task.IsCompleted)
+            {
+                _cancellation!.Cancel();
+            }
+            var surname = SurnameBox.Text;
+            _cancellation = new CancellationTokenSource();
+            _task = Task.Delay(new TimeSpan(0, 0, 0,1), _cancellation.Token)
+            .ContinueWith(_ =>
+            {
+                var list = GetClientsBySurname(new SurnameModel(surname));
+                ClientList.Dispatcher.Invoke(() => ClientList.ItemsSource = list);
+            }, _cancellation.Token);
         }
 
         private void ClientList_OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
