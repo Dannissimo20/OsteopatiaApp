@@ -34,5 +34,12 @@ namespace HttpClient
                 return DateTime.ToString("t");
             }
         }
+        public string GetInfoForListView
+        {
+            get
+            {
+                return $"-  {DateTime.ToString("d")} в {GetTime}";
+            }
+        }
     }
 }

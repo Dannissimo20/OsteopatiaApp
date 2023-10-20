@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -23,6 +25,19 @@ namespace HttpClient.windows
             var list = res.GetJsonAsync<IEnumerable<Client>>().Result;
             return list;
         }
+        public IEnumerable<TimeTableEntry> GetTimeTablesBySurname(SurnameModel surnameModel)
+        {
+            var res = $"{_connection}TimeTable/getBySurname".PostJsonAsync(surnameModel).Result;
+            var list = res.GetJsonAsync<IEnumerable<TimeTableEntry>>().Result;
+            return list;
+        }
+
+        public int RemoveTimeTable(TimeTableEntry tableEntry)
+        {
+            var res = $"{_connection}TimeTable/removeTableLine".PostJsonAsync(tableEntry).Result;
+            var list = res.GetJsonAsync<int>().Result;
+            return list;
+        }
         
         private void SurnameBox_OnTextChanged(object sender, TextChangedEventArgs e)
         {
@@ -34,14 +49,18 @@ namespace HttpClient.windows
         {
             var s = (Client) ClientList.SelectedItem;
             SurnameBox.Text = s.Surname;
-            TimeTableList.ItemsSource = TimeTableEntry.GetTimeTablesBySurname(s.Surname);
+            TimeTableList.ItemsSource = GetTimeTablesBySurname(new SurnameModel(s.Surname)).ToList();
         }
         private void RemoveButton_OnClick(object sender, RoutedEventArgs e)
         {
             for (int i = 0; i < TimeTableList.SelectedItems.Count; i++)
             {
                 var tt = (TimeTableEntry) TimeTableList.SelectedItems[i];
-                TimeTableEntry.Remove(tt);
+                var res = RemoveTimeTable(tt);
+                if (res == 400)
+                {
+                    new Exception();
+                }
             }
             _tablePage.FillingData();
             Close();

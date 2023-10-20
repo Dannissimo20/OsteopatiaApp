@@ -79,11 +79,11 @@ namespace HttpServer.Controllers
             }
         }
         [HttpPost("removeTableLine")]
-        public int RemoveTimeTableLine(TimeTableLineModel tableLineModel)
+        public int RemoveTimeTableLine(TimeTableEntry tableLineModel)
         {
             try
             {
-                var tte = _timeTable.GetTimeTableLineByDate(DateTime.Parse(tableLineModel.Date));
+                var tte = _timeTable.GetTimeTableLineByDate(tableLineModel.DateTime);
                 _timeTable.Remove(tte);
                 return 200;
             }
@@ -103,9 +103,9 @@ namespace HttpServer.Controllers
         }
 
         [HttpPost("getBySurname")]
-        public IEnumerable<TimeTableEntry> GetTimeTablesBySurname(string surname)
+        public IEnumerable<TimeTableEntry> GetTimeTablesBySurname(SurnameModel surnameModel)
         {
-            return _timeTable.FindAllBySurname(surname);
+            return _timeTable.FindAllBySurname(surnameModel.Surname);
         }
     }
 }

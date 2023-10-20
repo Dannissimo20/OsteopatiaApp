@@ -102,7 +102,7 @@ namespace OstLib
         {
             get
             {
-                return $"{Client.Surname} {Client.Name}  -  {DateTime.ToString("d")} в {GetTime}";
+                return $"-  {DateTime.ToString("d")} в {GetTime}";
             }
         }
     }
