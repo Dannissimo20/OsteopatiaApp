@@ -23,7 +23,8 @@
         
         <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal">
             <Button x:Name="addTimeTableLineButton" Height="40" Width="auto" HorizontalAlignment="Left" Content="Создать запись" FontSize="18" Margin="0 0 10 0" Click="AddTimeTableLineButton_OnClick"/>
-            <Button x:Name="defaultWeekButton" Height="40" Width="auto" HorizontalAlignment="Left" Content="Текущая неделя" FontSize="18" Margin="0 0 10 0" Click="defaultWeekButton_OnClick"/>
+            <Button x:Name="removeTimeTableButton" Height="40" Width="auto" HorizontalAlignment="Left" Content="Удаление записей" FontSize="18" Margin="0 0 10 0" Click="RemoveTimeTableButton_OnClick"/>
+            <Button x:Name="defaultWeekButton" Height="40" Width="auto" HorizontalAlignment="Left" Content="Текущая неделя" FontSize="18" Margin="30 0 10 0" Click="DefaultWeekButton_OnClick"/>
         </StackPanel>
         
         

@@ -39,8 +39,15 @@ namespace OstLib.Services
             .Include(t=>t.Client);
         }
 
-        public void Add(TimeTableEntry timeTableEntry){
+        public void Add(TimeTableEntry timeTableEntry)
+        {
             _context.TimeTableEntry.Add(timeTableEntry);
+            _context.SaveChanges();
+        }
+
+        public void Remove(TimeTableEntry timeTableEntry)
+        {
+            _context.TimeTableEntry.Remove(timeTableEntry);
             _context.SaveChanges();
         }
         
@@ -53,6 +60,11 @@ namespace OstLib.Services
             if (tte == null)
                 tte = new TimeTableEntry(DateTime.Today, new Client());
             return tte;
+        }
+
+        public IEnumerable<TimeTableEntry> FindAllBySurname(string surname)
+        {
+            return _context.TimeTableEntry.Where(tt => tt.Client.Surname == surname).OrderBy(t=>t.DateTime).ToList();
         }
     }
 }

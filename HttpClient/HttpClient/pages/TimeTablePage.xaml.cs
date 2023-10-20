@@ -125,7 +125,7 @@ namespace HttpClient.pages
             FillingData();
         }
 
-        private void defaultWeekButton_OnClick(object sender, RoutedEventArgs e)
+        private void DefaultWeekButton_OnClick(object sender, RoutedEventArgs e)
         {
             _weekNumber = 0;
             FillingData();
@@ -135,6 +135,12 @@ namespace HttpClient.pages
         {
             var attWindow = new AddTimeTableLineWindow(this);
             attWindow.Show();
+        }
+        
+        private void RemoveTimeTableButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            var ttsWindow = new TimeTableStateWindow(this);
+            ttsWindow.Show();
         }
     }
 }
