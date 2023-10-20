@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using Flurl.Http;
+using Osteopatia.TimeTable;
 using Osteopatia.TImeTable;
 using OstLib;
 using OstLib.Models;
@@ -24,11 +25,11 @@ namespace Osteopatia
             FillingData();
         }
 
-        public Task<IEnumerable<TimeTableUdpModel>> GetTimeTablesForThisWeek(int weekNumberJson)
+        public IEnumerable<TimeTableUdpModel> GetTimeTablesForThisWeek(int weekNumberJson)
         {
-            var res = "http://localhost:8759/TimeTable".PostJsonAsync(new TimeTableWeekModelJSON(weekNumberJson)).Result;
+            var res = "http://localhost:5000/TimeTable/getWeekTable".PostJsonAsync(new TimeTableWeekModelJSON(weekNumberJson)).Result;
             var list = res.GetJsonAsync<IEnumerable<TimeTableUdpModel>>().Result;
-            return Task.FromResult(list);
+            return list;
         }
 
         public void FillingData()
@@ -82,7 +83,7 @@ namespace Osteopatia
 
             List<TimeTableWeekModel> listOfRows = new List<TimeTableWeekModel>();
 
-            var list1 = GetTimeTablesForThisWeek(_weekNumber).Result;
+            var list1 = GetTimeTablesForThisWeek(_weekNumber);
 
             for (int i = 9; i <= 19; i++)
             {
@@ -121,7 +122,7 @@ namespace Osteopatia
             FillingData();
         }
 
-        private void defaultWeekButton_OnClick(object sender, RoutedEventArgs e)
+        private void DefaultWeekButton_OnClick(object sender, RoutedEventArgs e)
         {
             _weekNumber = 0;
             FillingData();
@@ -131,6 +132,12 @@ namespace Osteopatia
         {
             var attWindow = new AddTimeTableLineWindow(this);
             attWindow.Show();
+        }
+        
+        private void RemoveTimeTableButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            var ttsWindow = new TimeTableStateWindow(this);
+            ttsWindow.Show();
         }
     }
 }

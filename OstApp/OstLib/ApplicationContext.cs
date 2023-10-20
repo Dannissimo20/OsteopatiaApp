@@ -32,6 +32,7 @@ namespace OstLib
             modelBuilder.Entity<Appointment>().Ignore(s => s.GetDate);
             modelBuilder.Entity<TimeTableEntry>().Ignore(s => s.GetDate);
             modelBuilder.Entity<TimeTableEntry>().Ignore(s => s.GetTime);
+            modelBuilder.Entity<TimeTableEntry>().Ignore(s => s.GetInfoForListView);
         }
     }
 }
