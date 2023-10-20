@@ -9,6 +9,9 @@ namespace OstLib.Repository
         IEnumerable<TimeTableEntry> FindAll();
         IEnumerable<TimeTableEntry> FindAllForThisWeek(int k);
         void Add(TimeTableEntry timeTableEntry);
+        void Remove(TimeTableEntry timeTableEntry);
         TimeTableEntry GetTimeTableLineByDate(DateTime date);
+        IEnumerable<TimeTableEntry> FindAllBySurname(string surname);
+        
     }
 }
