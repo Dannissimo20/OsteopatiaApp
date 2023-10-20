@@ -45,6 +45,11 @@ namespace OstLib
             db.SaveChanges();
         }
         public static void Save() => db.SaveChanges();
+        public static void Remove(TimeTableEntry tt)
+        {
+            db.TimeTableEntry.Remove(tt);
+            db.SaveChanges();
+        }
 
         public static List<TimeTableEntry> GetTimeTableLineByDate(List<DateTime> date)
         {
@@ -72,6 +77,11 @@ namespace OstLib
             return tte;
         }
 
+        public static List<TimeTableEntry> GetTimeTablesBySurname(string surname)
+        {
+            return db.TimeTableEntry.Where(tt => tt.Client.Surname == surname).OrderBy(t=>t.DateTime).ToList();
+        }
+
         public string GetDate
         {
             get
@@ -85,6 +95,14 @@ namespace OstLib
             get
             {
                 return DateTime.ToString("t");
+            }
+        }
+
+        public string GetInfoForListView
+        {
+            get
+            {
+                return $"{Client.Surname} {Client.Name}  -  {DateTime.ToString("d")} в {GetTime}";
             }
         }
     }

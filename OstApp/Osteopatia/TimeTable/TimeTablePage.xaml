@@ -24,12 +24,13 @@
         
         <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal">
             <Button x:Name="addTimeTableLineButton" Height="40" Width="auto" HorizontalAlignment="Left" Content="Создать запись" FontSize="18" Margin="0 0 10 0" Click="AddTimeTableLineButton_OnClick"/>
-            <Button x:Name="defaultWeekButton" Height="40" Width="auto" HorizontalAlignment="Left" Content="Текущая неделя" FontSize="18" Margin="0 0 10 0" Click="defaultWeekButton_OnClick"/>
+            <Button x:Name="removeTimeTableButton" Height="40" Width="auto" HorizontalAlignment="Left" Content="Удаление записей" FontSize="18" Margin="0 0 10 0" Click="RemoveTimeTableButton_OnClick"/>
+            <Button x:Name="defaultWeekButton" Height="40" Width="auto" HorizontalAlignment="Left" Content="Текущая неделя" FontSize="18" Margin="30 0 10 0" Click="DefaultWeekButton_OnClick"/>
         </StackPanel>
         
         
         <DataGrid x:Name="dgTimeTable" Grid.Column="1" Grid.Row="1" AutoGenerateColumns="False"
-                  Margin="2,0,2,0" FontSize="20" BorderThickness="1" FontFamily="Times New Roman" IsReadOnly="True" SelectionMode="Single" 
+                  Margin="2,0,2,0" FontSize="18" BorderThickness="1" FontFamily="Times New Roman" IsReadOnly="True" SelectionMode="Single" 
                   SelectionUnit="FullRow" CanUserResizeColumns="False" CanUserReorderColumns="False" CanUserSortColumns="False" GridLinesVisibility="All">
             <DataGrid.DataContext>
                 <models:TimeTableWeekModel/>
@@ -49,10 +50,5 @@
         
         <Button x:Name="leftButton" Grid.Column="0" Grid.Row="1" Height="auto" Background="LightGray" Content="◀" FontSize="30" Foreground="DarkCyan" Click="LeftButton_OnClick"/>
         <Button x:Name="rightButton" Grid.Column="2" Grid.Row="1" Height="auto" Background="LightGray" Content="▶" FontSize="30" Foreground="DarkCyan" Click="RightButton_OnClick"/>
-        <!--<StackPanel Grid.Column="1">
-            <DatePicker x:Name="DateBox" materialDesign:HintAssist.Hint="День" FontSize="15" Margin="5"></DatePicker>
-            <Calendar x:Name="DateBox" SelectionMode="SingleRange" FontSize="15" Margin="5" SelectedDatesChanged="calendar_SelectedDatesChanged"></Calendar>
-            <Button x:Name="DebugButton" Click="DebugButton_OnClick"/>
-        </StackPanel>-->
     </Grid>
 </Page>
