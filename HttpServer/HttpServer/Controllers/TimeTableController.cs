@@ -78,6 +78,21 @@ namespace HttpServer.Controllers
                 return 400;
             }
         }
+        [HttpPost("removeTableLine")]
+        public int RemoveTimeTableLine(TimeTableLineModel tableLineModel)
+        {
+            try
+            {
+                var tte = _timeTable.GetTimeTableLineByDate(DateTime.Parse(tableLineModel.Date));
+                _timeTable.Remove(tte);
+                return 200;
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine("ОБОШИБКА " + e.Message);
+                return 400;
+            }
+        }
 
         [HttpPost("getByDate")]
         public TimeTableEntry GetTimeTableLineByDate(TimeTableDateModel tableDateModel)
@@ -85,6 +100,12 @@ namespace HttpServer.Controllers
             var tte =  _timeTable.GetTimeTableLineByDate(DateTime.Parse(tableDateModel.Date));
             tte.Client.TimeTableLines = null;
             return tte;
+        }
+
+        [HttpPost("getBySurname")]
+        public IEnumerable<TimeTableEntry> GetTimeTablesBySurname(string surname)
+        {
+            return _timeTable.FindAllBySurname(surname);
         }
     }
 }
