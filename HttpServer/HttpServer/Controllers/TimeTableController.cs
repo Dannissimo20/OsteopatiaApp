@@ -107,5 +107,12 @@ namespace HttpServer.Controllers
         {
             return _timeTable.FindAllBySurname(surnameModel.Surname);
         }
+
+        [HttpPost("getLastDate")]
+        public DateTime GetLastDateForClient(TimeTableLineModel tableLineModel)
+        {
+            var client = _client.GetByTimeTableFields(tableLineModel);
+            return _timeTable.GetLastDateForClient(client);
+        }
     }
 }

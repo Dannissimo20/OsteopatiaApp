@@ -66,5 +66,13 @@ namespace OstLib.Services
         {
             return _context.TimeTableEntry.Where(tt => tt.Client.Surname == surname).OrderBy(t=>t.DateTime).ToList();
         }
+
+        public DateTime GetLastDateForClient(Client client)
+        {
+            var date = _context.TimeTableEntry.Where(tte => tte.Client == client).OrderBy(tt=>tt.ID).LastOrDefault();
+            if(date == null)
+                return DateTime.Now;
+            return date.DateTime.AddHours(-date.DateTime.Hour);
+        }
     }
 }
