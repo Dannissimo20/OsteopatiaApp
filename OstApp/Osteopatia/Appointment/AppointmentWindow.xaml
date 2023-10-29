@@ -6,14 +6,19 @@
         xmlns:local="clr-namespace:Osteopatia"
         xmlns:entity="clr-namespace:OstLib;assembly=OstLib"
         mc:Ignorable="d"
-        Title="AppointmentWindow" Height="650" Width="960">
-    <StackPanel>
+        Title="AppointmentWindow" Height="750" Width="1160">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="25"/>
+            <RowDefinition Height="300"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
         <TextBlock x:Name="FIOBlock" FontSize="20"/>
-        <StackPanel Orientation="Horizontal">
-            <TextBlock x:Name="AnamnezBlock" FontSize="16" Width="180" TextWrapping="Wrap" Margin="5"/>
-            <TextBlock x:Name="GinekologBlock" FontSize="16" Width="180" TextWrapping="Wrap" Margin="5"/>
-            <TextBlock x:Name="OperationBlock" FontSize="16" Width="180" TextWrapping="Wrap" Margin="5"/>
-            <TextBlock x:Name="InjuryBlock" FontSize="16" Width="180" TextWrapping="Wrap" Margin="5"/>
+        <StackPanel Orientation="Horizontal" Grid.Row="1">
+            <TextBlock x:Name="AnamnezBlock" FontSize="16" Width="230" TextWrapping="Wrap" Margin="5"/>
+            <TextBlock x:Name="GinekologBlock" FontSize="16" Width="230" TextWrapping="Wrap" Margin="5"/>
+            <TextBlock x:Name="OperationBlock" FontSize="16" Width="230" TextWrapping="Wrap" Margin="5"/>
+            <TextBlock x:Name="InjuryBlock" FontSize="16" Width="230" TextWrapping="Wrap" Margin="5"/>
             <StackPanel>
                 <Button x:Name="AppointmentBut" Content="Добавить прием" Margin="5" Click="AppointmentBut_Click"/>
                 <Button x:Name="AddTimeTableLineBut" Content="Внести в расписание" Margin="5" Click="AddTimeTableLineBut_Click" />
@@ -21,7 +26,7 @@
         </StackPanel>
         <DataGrid x:Name="dgAppointment" AutoGenerateColumns="False" ItemsSource="{Binding}"
                   Margin="0,0,2,0" FontSize="20" BorderThickness="1" FontFamily="Times New Roman" IsReadOnly="True" SelectionMode="Single" 
-                  SelectionUnit="FullRow" CanUserResizeColumns="False" CanUserReorderColumns="False">
+                  SelectionUnit="FullRow" CanUserResizeColumns="False" CanUserReorderColumns="False" Grid.Row="2">
             <DataGrid.DataContext>
                 <entity:Appointment/>
             </DataGrid.DataContext>
@@ -62,5 +67,5 @@
                 </Style>
             </DataGrid.ItemContainerStyle>
         </DataGrid>
-    </StackPanel>
+    </Grid>
 </Window>
