@@ -57,6 +57,13 @@ namespace HttpClient.windows
             return list;
         }
 
+        public DateTime GetLastDateForClient(TimeTableLineModel tableLineModel)
+        {
+            var req = $"{_connection}TimeTable/getLastDate".PostJsonAsync(tableLineModel).Result;
+            var res = req.GetJsonAsync<DateTime>().Result;
+            return res;
+        }
+
         private void AddButton_OnClick(object sender, RoutedEventArgs e)
         {
             #region Проверка на правильность заполнения полей и на уже существующую запись
@@ -92,10 +99,7 @@ namespace HttpClient.windows
                 return;
             }
 
-            if (AddCalendar.SelectedDate.Value.Day < DateTime.Now.Day ||
-                AddCalendar.SelectedDate.Value.Month < DateTime.Now.Month ||
-                AddCalendar.SelectedDate.Value.Year < DateTime.Now.Year
-               )
+            if (AddCalendar.SelectedDate.Value < DateTime.Now)
             {
                 MessageBox.Show("Нельзя записать человека на дату или время которое уже прошло",
                     "Путешествуем во времени?",
@@ -117,6 +121,34 @@ namespace HttpClient.windows
                     MessageBoxButton.OK,
                     MessageBoxImage.Stop);
                 return;
+            }
+
+            var item_client = new TimeTableLineModel(null, SurnameBox.Text, NameBox.Text, PhoneBox.Text);
+            var dateOfLastLine = GetLastDateForClient(item_client);
+            if (AddCalendar.SelectedDate.Value - dateOfLastLine <=TimeSpan.Parse("14") &&
+                AddCalendar.SelectedDate.Value > dateOfLastLine)
+            {
+                var result =  MessageBox.Show($"14 дней с последнего приема еще не прошло\n" +
+                                              $"Последний прием был {dateOfLastLine}\n"+
+                                              $"Продолжить?",
+                    "Доп нагрузка!",
+                    MessageBoxButton.OKCancel,
+                    MessageBoxImage.Warning);
+                if (result == MessageBoxResult.Cancel)
+                    return;
+
+            }
+            else if (AddCalendar.SelectedDate.Value - dateOfLastLine >= TimeSpan.Parse("-14") &&
+                     AddCalendar.SelectedDate.Value < dateOfLastLine)
+            {
+                var result =  MessageBox.Show($"14 дней до следующего приема не пройдёт\n" +
+                                              $"Следующий прием будет {dateOfLastLine}\n"+
+                                              $"Продолжить?",
+                    "Доп нагрузка!",
+                    MessageBoxButton.OKCancel,
+                    MessageBoxImage.Warning);
+                if (result == MessageBoxResult.Cancel)
+                    return;
             }
 
             #endregion
