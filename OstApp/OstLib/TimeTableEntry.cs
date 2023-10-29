@@ -29,6 +29,14 @@ namespace OstLib
                 return false;
         }
 
+        public static DateTime GetLastDateForClient(Client client)
+        {
+            var date = db.TimeTableEntry.Where(tte => tte.Client == client).OrderBy(tt=>tt.ID).LastOrDefault();
+            if(date == null)
+                return DateTime.Now;
+            return date.DateTime.AddHours(-date.DateTime.Hour);
+        }
+
         public static List<TimeTableEntry> FindAll()
         {
             return db.TimeTableEntry.ToList();

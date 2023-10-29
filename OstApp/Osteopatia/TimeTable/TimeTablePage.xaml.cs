@@ -27,7 +27,7 @@ namespace Osteopatia
 
         public IEnumerable<TimeTableUdpModel> GetTimeTablesForThisWeek(int weekNumberJson)
         {
-            var res = "http://localhost:5000/TimeTable/getWeekTable".PostJsonAsync(new TimeTableWeekModelJSON(weekNumberJson)).Result;
+            var res = "http://localhost:8759/TimeTable/getWeekTable".PostJsonAsync(new TimeTableWeekModelJSON(weekNumberJson)).Result;
             var list = res.GetJsonAsync<IEnumerable<TimeTableUdpModel>>().Result;
             return list;
         }

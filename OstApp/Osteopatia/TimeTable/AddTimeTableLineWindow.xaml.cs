@@ -65,10 +65,7 @@ public partial class AddTimeTableLineWindow
             return;
         }
 
-        if (AddCalendar.SelectedDate.Value.Day < DateTime.Now.Day ||
-            AddCalendar.SelectedDate.Value.Month < DateTime.Now.Month ||
-            AddCalendar.SelectedDate.Value.Year < DateTime.Now.Year
-           )
+        if (AddCalendar.SelectedDate < DateTime.Now)
         {
             MessageBox.Show("Нельзя записать человека на дату или время которое уже прошло",
                 "Путешествуем во времени?",
@@ -98,6 +95,32 @@ public partial class AddTimeTableLineWindow
                 MessageBoxButton.OK,
                 MessageBoxImage.Stop);
             return;
+        }
+
+        if (AddCalendar.SelectedDate.Value - TimeTableEntry.GetLastDateForClient(_client)<=TimeSpan.Parse("14") &&
+            AddCalendar.SelectedDate.Value > TimeTableEntry.GetLastDateForClient(_client))
+        {
+            var result =  MessageBox.Show($"14 дней с последнего приема еще не прошло\n" +
+                                          $"Последний прием был {TimeTableEntry.GetLastDateForClient(_client)}\n"+
+                            $"Продолжить?",
+                "Доп нагрузка!",
+                MessageBoxButton.OKCancel,
+                MessageBoxImage.Warning);
+            if (result == MessageBoxResult.Cancel)
+                return;
+
+        }
+        else if (AddCalendar.SelectedDate.Value - TimeTableEntry.GetLastDateForClient(_client) >= TimeSpan.Parse("-14") &&
+                 AddCalendar.SelectedDate.Value < TimeTableEntry.GetLastDateForClient(_client))
+        {
+            var result =  MessageBox.Show($"14 дней до следующего приема не пройдёт\n" +
+                                          $"Следующий прием будет {TimeTableEntry.GetLastDateForClient(_client)}\n"+
+                                          $"Продолжить?",
+                "Доп нагрузка!",
+                MessageBoxButton.OKCancel,
+                MessageBoxImage.Warning);
+            if (result == MessageBoxResult.Cancel)
+                return;
         }
         #endregion
 
@@ -133,9 +156,18 @@ public partial class AddTimeTableLineWindow
     private void ClientList_OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
     {
         var s = (Client) ClientList.SelectedItem;
-        SurnameBox.Text = s.Surname;
-        NameBox.Text = s.Name;
-        PhoneBox.Text = s.PhoneNumber;
+        if (s == null)
+        {
+            SurnameBox.Text = "";
+            NameBox.Text = "";
+            PhoneBox.Text = "";
+        }
+        else
+        {
+            SurnameBox.Text = s.Surname;
+            NameBox.Text = s.Name;
+            PhoneBox.Text = s.PhoneNumber;
+        }
         _client = s;
     }
 }
