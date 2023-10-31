@@ -25,12 +25,12 @@ namespace Osteopatia
             FillingData();
         }
 
-        public IEnumerable<TimeTableUdpModel> GetTimeTablesForThisWeek(int weekNumberJson)
+        /*public IEnumerable<TimeTableUdpModel> GetTimeTablesForThisWeek(int weekNumberJson)
         {
             var res = "http://localhost:8759/TimeTable/getWeekTable".PostJsonAsync(new TimeTableWeekModelJSON(weekNumberJson)).Result;
             var list = res.GetJsonAsync<IEnumerable<TimeTableUdpModel>>().Result;
             return list;
-        }
+        }*/
 
         public void FillingData()
         {
@@ -83,7 +83,7 @@ namespace Osteopatia
 
             List<TimeTableWeekModel> listOfRows = new List<TimeTableWeekModel>();
 
-            var list1 = GetTimeTablesForThisWeek(_weekNumber);
+            var list1 = TimeTableEntry.FindAllForThisWeek(_weekNumber);
 
             for (int i = 9; i <= 19; i++)
             {
@@ -93,15 +93,15 @@ namespace Osteopatia
                     int weekNum = k;
                     if (k == 7)
                         weekNum = 0;
-                    var cell = list1.FirstOrDefault(l => l.TimeTableDateTime.Hour == i &&
-                                                         (int) l.TimeTableDateTime.DayOfWeek == weekNum);
+                    var cell = list1.FirstOrDefault(l => l.DateTime.Hour == i &&
+                                                         (int) l.DateTime.DayOfWeek == weekNum);
                     string cellStr;
                     if (cell == null)
                         cellStr = "";
                     else
-                        cellStr = cell.ClientSurname + " " + 
-                                  cell.ClientName + "\n" + 
-                                  cell.ClientPhoneNumber;
+                        cellStr = cell.Client.Surname + " " + 
+                                  cell.Client.Name + "\n" + 
+                                  cell.Client.PhoneNumber;
                     listOfDays.Add(cellStr);
                 }
                 TimeTableWeekModel row = new TimeTableWeekModel($"{i}:00", listOfDays);

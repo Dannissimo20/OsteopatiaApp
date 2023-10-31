@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Castle.Core.Internal;
+using Itenso.TimePeriod;
 
 namespace OstLib
 {
@@ -33,8 +34,18 @@ namespace OstLib
         {
             var date = db.TimeTableEntry.Where(tte => tte.Client == client).OrderBy(tt=>tt.ID).LastOrDefault();
             if(date == null)
-                return DateTime.Now;
+                return DateTime.MinValue;
             return date.DateTime.AddHours(-date.DateTime.Hour);
+        }
+        
+        public static IEnumerable<TimeTableEntry> FindAllForThisWeek(int k)
+        {
+            Week week = new Week(DateTime.Now + TimeSpan.FromDays(k*7));
+            var lastDayOfWeek = week.LastDayOfWeek;
+            lastDayOfWeek = lastDayOfWeek.AddHours(23);
+            return db
+                .TimeTableEntry
+                .Where(t => t.DateTime <= lastDayOfWeek && t.DateTime >= week.FirstDayOfWeek);
         }
 
         public static List<TimeTableEntry> FindAll()
